@@ -1,0 +1,1332 @@
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    height: 100vh;
+    max-height: 100vh;
+    overflow: hidden;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+h1 {
+    color: #333;
+    font-size: 2.2rem;
+    margin: 0;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+}
+
+
+/* Title */
+h1 {
+    display: none;
+}
+
+/* Game Wrapper */
+#game-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    max-width: 100%;
+    margin: 0 auto;
+    width: 100%;
+    height: 100vh;
+    max-height: 100vh;
+    position: relative;
+    padding: 0;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+
+
+
+/* Difficulty Selector */
+#difficulty-selector {
+    display: flex;
+    align-items: center;
+}
+
+#difficulty-level {
+    min-width: 80px;
+    height: 40px;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 20px;
+    background: #ffffff;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+/* Game Status Container */
+#game-status-container {
+    display: none;
+}
+
+/* Turn Indicator */
+#turn-indicator {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(145deg, #4CAF50, #45a049);
+    color: #ffffff;
+    font-size: 1.3rem;
+    padding: 12px 16px;
+    border-radius: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    cursor: default;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    transition: all 0.3s ease;
+    font-weight: 700;
+    width: 100%;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0;
+    flex-shrink: 0;
+    z-index: 100;
+    min-height: 52px;
+}
+
+#turn-indicator:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.2);
+}
+
+#turn-icon {
+    font-size: 1.8rem;
+    animation: iconBounce 1s infinite;
+}
+
+#turn-text {
+    font-family: 'Creepster', 'Impact', 'Arial Black', sans-serif;
+    font-size: 1.3rem;
+}
+
+/* Mobile Responsive Adjustments */
+@media screen and (max-width: 768px) {
+    #turn-indicator {
+        font-size: 0.9rem;
+        padding: 8px 16px;
+        min-width: 140px;
+    }
+
+    #turn-icon {
+        font-size: 1.1rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    #turn-indicator {
+        font-size: 0.85rem;
+        padding: 8px 12px;
+        min-width: 120px;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    #header {
+        background: #1a1a1a;
+    }
+
+    #game-controls, #game-status-container {
+        background: #2d2d2d;
+    }
+
+    #pause-btn, #undo-btn, #bot-mode-btn, #sound-toggle,
+    #turn-indicator {
+        background: #2d2d2d;
+        border-color: #404040;
+        color: #ffffff;
+    }
+
+    #pause-btn:hover, #undo-btn:hover, #bot-mode-btn:hover, #sound-toggle:hover,
+    #turn-indicator:hover {
+        background: #363636;
+        border-color: #505050;
+    }
+}
+
+/* Add turn change animation */
+@keyframes turnChange {
+    0% {
+        transform: scale(1);
+        background: linear-gradient(145deg, #ffffff, #f8f9fa);
+    }
+    50% {
+        transform: scale(1.1);
+        background: linear-gradient(145deg, #ffeb3b, #ffd700);
+    }
+    100% {
+        transform: scale(1);
+        background: linear-gradient(145deg, #ffffff, #f8f9fa);
+    }
+}
+
+/* Add this class to the turn indicator when turn changes */
+.turn-changed {
+    animation: turnChange 0.5s ease;
+}
+
+/* Game Stats */
+#game-stats {
+    display: none;
+}
+
+.timer-display {
+    font-size: 0.7rem;
+    color: #333;
+    font-weight: 500;
+    background: #f8f9fa;
+    padding: 2px 6px;
+    border-radius: 3px;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.7rem;
+    color: #666;
+    font-weight: 500;
+}
+
+.stat-label {
+    color: #666;
+}
+
+.stat-value {
+    color: #333;
+    font-weight: 600;
+}
+
+/* Bot Controls */
+#game-controls-right {
+    display: none;
+}
+
+#bot-mode-btn {
+    display: none !important;
+}
+
+.bot-controls {
+    display: flex;
+    flex-direction: row;
+    gap: 4px;
+    align-items: center;
+    background: #ffffff;
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* Board Section */
+#board-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    position: relative;
+    order: 1;
+    margin: 0;
+    padding: 8px;
+    padding-top: 120px;
+    flex: 1;
+    min-height: 0;
+    box-sizing: border-box;
+}
+
+/* Captured Goats (Left) */
+#captured-goats-left {
+    position: absolute;
+    top: 56px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: auto;
+    max-width: 90%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(145deg, #ffffff, #e6e6e6);
+    padding: 8px 16px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    margin: 0;
+    flex-shrink: 0;
+    z-index: 50;
+}
+
+#captured-goats-left .goat {
+    width: 36px;
+    height: 36px;
+    background-image: url('goat.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    opacity: 0.6;
+    border: 2px solid #999;
+    border-radius: 50%;
+}
+
+/* Game Container */
+#game-container {
+    width: min(90vmin, 600px);
+    height: min(90vmin, 600px);
+    aspect-ratio: 1 / 1;
+    background: linear-gradient(145deg, #e6e6e6, #ffffff);
+    border-radius: 12px;
+    box-shadow: 
+        8px 8px 16px rgba(0, 0, 0, 0.15), 
+        -8px -8px 16px rgba(255, 255, 255, 0.7);
+    overflow: visible;
+    position: relative;
+    border: 4px solid #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+#game-container:hover {
+    box-shadow: 
+        15px 15px 25px rgba(0, 0, 0, 0.2), 
+        -15px -15px 25px rgba(255, 255, 255, 0.8);
+}
+
+
+        /* Styles for the How to Play popup */
+        
+#how-to-play-modal {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: rgba(0, 0, 0, 0.7);
+display: flex;
+align-items: center;
+justify-content: center;
+z-index: 1000;
+}
+.modal-content {
+background: white;
+padding: 20px;
+border-radius: 10px;
+max-width: 400px;
+text-align: center;
+position: relative;
+}
+.close-btn {
+position: absolute;
+top: 10px;
+right: 15px;
+cursor: pointer;
+font-size: 20px;
+font-weight: bold;
+}
+        
+#game-container:active {
+    box-shadow: 
+        8px 8px 15px rgba(0, 0, 0, 0.15), 
+        -8px -8px 15px rgba(255, 255, 255, 0.7);
+}
+
+
+/* Game Board */
+#game-board {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 2px;
+    width: 90%;
+    height: 90%;
+    padding: 10px;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 2;
+    background: #f9f9f9;
+    border-radius: 10px;
+}
+
+.point {
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    border-radius: 5px;
+    position: relative;
+    z-index: 2;
+}
+
+.point:hover {
+    background-color: #e8f4f8;
+    transform: scale(1.02);
+    border-color: #3498db;
+}
+
+.point:active {
+    background-color: #d0e8f0;
+    transform: scale(0.98);
+}
+
+
+.tiger, .goat {
+    width: 85%;
+    height: 85%;
+    min-width: 40px;
+    min-height: 40px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    transition: opacity 0.2s ease, transform 0.3s ease;
+    position: relative;
+    z-index: 3;
+    border-radius: 50%;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.tiger {
+    background-image: url('tiger.png');
+    background-color: rgba(255, 140, 0, 0.2);
+    border: 2px solid #ff8c00;
+}
+
+.goat {
+    background-image: url('goat.png');
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 2px solid #666;
+}
+
+/* Valid move highlighting */
+.point.valid-move {
+    background-color: #d4edda !important;
+    border-color: #28a745 !important;
+    box-shadow: 0 0 10px rgba(40, 167, 69, 0.5);
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+/* Piece hover effects */
+.tiger:hover, .goat:hover {
+    transform: scale(1.1);
+    filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.4)) brightness(1.1);
+}
+
+.selected {
+    outline: 3px solid #007bff;
+    outline-offset: -3px;
+    box-sizing: border-box;
+}
+
+/* Game Status */
+.game-status {
+    display: none;
+}
+
+/* Game Rules Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.modal-content {
+    background-color: #ffffff;
+    margin: 5% auto;
+    padding: 30px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 85vh;
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    overflow-y: auto;
+}
+
+.close-btn {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #666;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close-btn:hover {
+    color: #000;
+}
+
+.modal-content h2 {
+    color: #333;
+    margin-bottom: 25px;
+    text-align: center;
+    font-size: 1.8rem;
+}
+
+.rules-section {
+    margin-bottom: 25px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+}
+
+.rules-section h3 {
+    color: #2c3e50;
+    margin-bottom: 15px;
+    font-size: 1.3rem;
+}
+
+.rules-section h4 {
+    color: #34495e;
+    margin: 15px 0 10px;
+    font-size: 1.1rem;
+}
+
+.rules-section ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.rules-section li {
+    margin: 8px 0;
+    padding-left: 25px;
+    position: relative;
+    line-height: 1.4;
+}
+
+.rules-section li:before {
+    content: "•";
+    color: #3498db;
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+}
+
+/* Mobile Responsive Adjustments */
+@media screen and (max-width: 768px) {
+    .modal-content {
+        margin: 10% auto;
+        padding: 20px;
+        width: 95%;
+    }
+
+    .modal-content h2 {
+        font-size: 1.5rem;
+    }
+
+    .rules-section h3 {
+        font-size: 1.2rem;
+    }
+
+    .rules-section h4 {
+        font-size: 1rem;
+    }
+
+    .rules-section li {
+        font-size: 0.9rem;
+    }
+}
+
+/* Ensure the modal covers the entire viewport */
+#game-rules-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%; /* Adjust width for smaller screens */
+    max-width: 600px;
+    max-height: 80vh; /* Limits height so it doesn't go off-screen */
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    overflow-y: auto; /* Enables scrolling if content overflows */
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+    display: none;
+    z-index: 1000;
+}
+
+/* Make sure the modal content is scrollable */
+#game-rules-modal .modal-content {
+    max-height: 70vh; /* Ensure content fits within modal */
+    overflow-y: auto; /* Enable scrolling */
+    padding: 15px;
+}
+
+/* Prevent body scrolling when modal is open */
+body.modal-open {
+    overflow: hidden;
+}
+
+/* Game Rules Button (Floating Bottom Right) */
+#game-rules-container {
+    position: fixed;
+    bottom: 8px;
+    right: 8px;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Improved Game Rules Button */
+#game-rules-btn {
+    background-color: #3498db;
+    color: #ffffff;
+    font-size: 1.5rem;
+    padding: 0;
+    border: 2px solid #2980b9;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    min-height: 48px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    font-weight: bold;
+}
+
+/* Hover & Active Effects */
+#game-rules-btn:hover {
+    background-color: #ffaa00;
+    transform: scale(1.05);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
+}
+
+#game-rules-btn:active {
+    transform: scale(0.95);
+}
+
+/* Make the modal close button more visible */
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #ff0000;
+    transition: color 0.3s ease;
+}
+
+.close-btn:hover {
+    color: #cc0000;
+}
+
+/* Restart Button Container */
+#restart-container {
+    position: fixed;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#restart-btn {
+    background-color: #e74c3c;
+    color: #ffffff;
+    font-size: 1.5rem;
+    padding: 0;
+    border: 2px solid #c0392b;
+    border-radius: 50%;
+    width: 56px;
+    height: 56px;
+    min-width: 56px;
+    min-height: 56px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    transition: all 0.3s ease;
+    font-weight: bold;
+}
+
+#restart-btn:hover {
+    background-color: #c0392b;
+    transform: scale(1.05);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+#restart-btn:active {
+    transform: scale(0.95);
+}
+
+
+#game-over-modal button:hover {
+    background: #0056b3;
+}
+
+/* Center the game-over modal properly */
+#game-over-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.8); /* Dark transparent background */
+    padding: 20px;
+    text-align: center;
+    border-radius: 10px;
+    color: white;
+    display: none; /* Hidden until game over */
+    z-index: 1000; /* Ensure it stays above everything */
+}
+
+/* Style the modal content */
+#game-over-modal .modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    color: black;
+    text-align: center;
+}
+
+
+/* Game Mode Indicator */
+#mode-indicator {
+    font-size: 1.2rem;
+    padding: 5px 10px;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+/* Bot Toggle Button */
+#bot-toggle {
+    margin-left: 20px;
+}
+
+#bot-mode-btn {
+    background: linear-gradient(145deg, #4CAF50, #45a049);
+    color: #000000;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    font-family: 'Creepster', 'Impact', 'Arial Black', sans-serif;
+    transition: all 0.3s ease;
+    min-width: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+#difficulty-level {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    color: #333;
+    font-weight: 500;
+    cursor: pointer;
+    min-width: 100px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease;
+}
+
+#difficulty-level:hover {
+    border-color: #d0d0d0;
+    background: #f8f9fa;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .bot-controls {
+        background: rgba(0, 0, 0, 0.2);
+    }
+
+    #difficulty-level {
+        background: linear-gradient(145deg, #2d2d2d, #1a1a1a);
+        border-color: #45a049;
+        color: #000000;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    }
+
+    #difficulty-level option {
+        background-color: #2d2d2d;
+        color: #000000;
+    }
+
+    #pause-btn, #undo-btn, #bot-mode-btn, #sound-toggle,
+    #turn-indicator, #game-stats, .timer-display, .stat-item,
+    .game-status, .game-status div {
+        color: #000000;
+    }
+
+    .stat-label, .stat-value {
+        color: #000000;
+    }
+}
+
+/* Mobile Responsive Adjustments */
+@media screen and (max-width: 768px) {
+    #game-container {
+        width: min(85vmin, 500px);
+        height: min(85vmin, 500px);
+        border: 3px solid #ccc;
+        border-radius: 10px;
+    }
+
+    #captured-goats-left {
+        top: 52px;
+        width: auto;
+        max-width: 95%;
+        gap: 6px;
+        padding: 8px 12px;
+    }
+
+    #captured-goats-left .goat {
+        width: 30px;
+        height: 30px;
+    }
+
+    .point {
+        min-width: 40px;
+        min-height: 40px;
+        border-radius: 6px;
+        border: 1.5px solid #ddd;
+    }
+
+    .tiger, .goat {
+        width: 80%;
+        height: 80%;
+        min-width: 32px;
+        min-height: 32px;
+    }
+
+    #game-rules-btn {
+        width: 44px;
+        height: 44px;
+        min-width: 44px;
+        min-height: 44px;
+        font-size: 1.3rem;
+    }
+
+    #game-rules-container {
+        bottom: 68px;
+        right: 6px;
+    }
+
+    .modal-content {
+        width: 90%;
+        margin: 5% auto;
+        padding: 15px;
+        max-height: 85vh;
+        overflow-y: auto;
+    }
+
+    #pause-btn, #undo-btn, #sound-toggle {
+        width: 44px;
+        height: 44px;
+        min-width: 44px;
+        min-height: 44px;
+        font-size: 1.1rem;
+    }
+
+    #board-section {
+        gap: 6px;
+        padding: 6px;
+        padding-top: 110px;
+    }
+
+    #header {
+        padding: 6px;
+        gap: 6px;
+    }
+
+    #turn-indicator {
+        font-size: 0.85rem;
+        padding: 6px 12px;
+        min-height: 44px;
+    }
+
+    #turn-icon {
+        font-size: 1rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    #game-container {
+        width: min(80vmin, 380px);
+        height: min(80vmin, 380px);
+        border: 2px solid #ccc;
+    }
+
+    #captured-goats-left {
+        top: 48px;
+        padding: 6px 10px;
+        gap: 5px;
+    }
+
+    #captured-goats-left .goat {
+        width: 26px;
+        height: 26px;
+    }
+
+    .point {
+        border-width: 1px;
+        min-width: 36px;
+        min-height: 36px;
+    }
+
+    .tiger, .goat {
+        width: 75%;
+        height: 75%;
+        min-width: 28px;
+        min-height: 28px;
+    }
+
+    #game-rules-modal .modal-content {
+        width: 95%;
+        margin: 3% auto;
+        padding: 12px;
+        max-height: 90vh;
+    }
+
+    #pause-btn, #undo-btn, #sound-toggle {
+        width: 42px;
+        height: 42px;
+        min-width: 42px;
+        min-height: 42px;
+        font-size: 1rem;
+    }
+
+    #turn-indicator {
+        font-size: 0.75rem;
+        padding: 5px 10px;
+        min-height: 40px;
+    }
+
+    #turn-icon {
+        font-size: 0.9rem;
+    }
+
+    .rules-section h3 {
+        font-size: 1rem;
+    }
+
+    .rules-section h4 {
+        font-size: 0.9rem;
+    }
+
+    .rules-section li {
+        font-size: 0.85rem;
+    }
+
+    #game-rules-btn {
+        width: 40px;
+        height: 40px;
+        min-width: 40px;
+        min-height: 40px;
+        font-size: 1.2rem;
+    }
+
+    #board-section {
+        padding: 4px;
+        padding-top: 100px;
+    }
+}
+
+/* Touch Device Optimizations */
+@media (hover: none) {
+    .point:hover {
+        transform: none;
+    }
+
+    #game-container:hover {
+        transform: none;
+        box-shadow: 
+            10px 10px 20px rgba(0, 0, 0, 0.15), 
+            -10px -10px 20px rgba(255, 255, 255, 0.7);
+    }
+
+    .game-status:hover {
+        transform: none;
+    }
+
+    #pause-btn:hover, #undo-btn:hover, #bot-mode-btn:hover, #sound-toggle:hover {
+        transform: none;
+    }
+
+    #turn-indicator:hover {
+        transform: none;
+    }
+}
+
+/* Game Controls */
+#game-controls {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+#pause-btn, #undo-btn {
+    background: linear-gradient(145deg, #4CAF50, #45a049);
+    color: #000000;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-family: 'Creepster', 'Impact', 'Arial Black', sans-serif;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+#pause-btn:hover, #undo-btn:hover {
+    background: linear-gradient(145deg, #45a049, #3d8b40);
+    transform: translateY(-2px);
+}
+
+#pause-btn:active, #undo-btn:active {
+    transform: translateY(0);
+}
+
+/* Add smooth animations for piece movements */
+.tiger, .goat {
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.point {
+    transition: all 0.3s ease;
+}
+
+/* Add hover effects for pieces */
+.tiger:hover, .goat:hover {
+    transform: scale(1.1);
+    filter: brightness(1.1);
+}
+
+/* Add capture animation */
+@keyframes captureAnimation {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.2); opacity: 0.5; }
+    100% { transform: scale(0); opacity: 0; }
+}
+
+.captured {
+    animation: captureAnimation 0.5s ease forwards;
+}
+
+/* Add move highlight animation */
+@keyframes moveHighlight {
+    0% { background-color: #ffff99; }
+    50% { background-color: #ffeb3b; }
+    100% { background-color: #ffff99; }
+}
+
+.valid-move {
+    animation: moveHighlight 1s infinite;
+}
+
+/* Add turn indicator animation */
+@keyframes turnPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.active-turn {
+    animation: turnPulse 1s infinite;
+}
+
+/* Add game mode indicator styles */
+#mode-indicator {
+    background: linear-gradient(145deg, #ffffff, #e6e6e6);
+    padding: 8px 15px;
+    border-radius: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+#mode-indicator:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Add difficulty indicator styles */
+#difficulty-level {
+    background: linear-gradient(145deg, #ffffff, #f0f0f0);
+    border: 2px solid #4CAF50;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#difficulty-level:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Add game status animation */
+@keyframes statusUpdate {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.game-status-update {
+    animation: statusUpdate 0.3s ease;
+}
+
+/* Add win celebration animation */
+@keyframes winCelebration {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+.winner {
+    animation: winCelebration 0.5s ease infinite;
+}
+
+/* Add board hover effect */
+#game-board {
+    transition: transform 0.3s ease;
+}
+
+#game-board:hover {
+    transform: scale(1.02);
+}
+
+/* Add button hover effects */
+button {
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+/* Add modal animation */
+@keyframes modalFadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.modal-content {
+    animation: modalFadeIn 0.3s ease;
+}
+
+/* Add sound indicator */
+.sound-enabled {
+    position: relative;
+}
+
+.sound-enabled::after {
+    content: "🔊";
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    font-size: 1.2em;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+/* Keyboard Shortcuts Tooltip */
+.shortcuts-tooltip {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* Hide keyboard shortcuts on mobile devices */
+@media screen and (max-width: 768px) {
+    .shortcuts-tooltip {
+        display: none;
+    }
+}
+
+/* Game Setup Modal Styles */
+.setup-modal {
+    max-width: 500px;
+    padding: 30px;
+    text-align: center;
+}
+
+.setup-modal h2 {
+    color: #2c3e50;
+    margin-bottom: 30px;
+    font-size: 2rem;
+}
+
+.setup-modal h3 {
+    color: #34495e;
+    margin-bottom: 20px;
+    font-size: 1.3rem;
+}
+
+.setup-options {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.mode-buttons, .difficulty-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.mode-btn, .difficulty-btn {
+    background: linear-gradient(145deg, #ffffff, #f0f0f0);
+    border: 2px solid #4CAF50;
+    padding: 15px 30px;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-family: 'Creepster', 'Impact', 'Arial Black', sans-serif;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.mode-btn:hover, .difficulty-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    background: linear-gradient(145deg, #4CAF50, #45a049);
+    color: white;
+}
+
+.mode-btn:active, .difficulty-btn:active {
+    transform: translateY(-1px);
+}
+
+.mode-icon, .difficulty-icon {
+    font-size: 1.5rem;
+}
+
+/* Hide game elements until setup is complete */
+#game-wrapper, #header {
+    display: none;
+}
+
+/* Mobile Responsive Adjustments */
+@media screen and (max-width: 768px) {
+    .setup-modal {
+        padding: 20px;
+        margin: 10px;
+    }
+
+    .mode-btn, .difficulty-btn {
+        min-width: 150px;
+        padding: 12px 20px;
+        font-size: 1rem;
+    }
+
+    .mode-buttons, .difficulty-buttons {
+        flex-direction: column;
+        gap: 15px;
+    }
+}
+
+/* Game Notification */
+.game-notification {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-100%);
+    background: linear-gradient(145deg, #4CAF50, #45a049);
+    color: white;
+    padding: 15px 30px;
+    border-radius: 25px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    opacity: 0;
+    transition: all 0.3s ease;
+    text-align: center;
+    max-width: 90%;
+    width: auto;
+}
+
+.game-notification.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+}
+
+/* Mobile Responsive Adjustments */
+@media screen and (max-width: 768px) {
+    .game-notification {
+        font-size: 1rem;
+        padding: 12px 25px;
+        width: 90%;
+        max-width: 300px;
+    }
+}
+
