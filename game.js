@@ -212,11 +212,13 @@ function updateGameStats() {
     };
     
     // Update status display with more information
-    statusText.innerHTML = `
-        <div>Phase ${phase}: ${phase === 1 ? 'Place Goats' : 'Move Pieces'}</div>
-        <div>Moves: ${moveCount} | Goats Captured: ${goatsCaptured}</div>
-        <div>${turn === "goat" ? "🐐 Goat's Turn" : "🐅 Tiger's Turn"}</div>
-    `;
+    if (statusText) {
+        statusText.innerHTML = `
+            <div>Phase ${phase}: ${phase === 1 ? 'Place Goats' : 'Move Pieces'}</div>
+            <div>Moves: ${moveCount} | Goats Captured: ${goatsCaptured}</div>
+            <div>${turn === "goat" ? "🐐 Goat's Turn" : "🐅 Tiger's Turn"}</div>
+        `;
+    }
 }
 
 // Bot logic
@@ -555,6 +557,10 @@ function resetGame() {
 
     // Reset captured goats display
     document.getElementById("captured-goats-left").innerHTML = "";
+    const capturedGoatsRight = document.getElementById("captured-goats-right");
+    if (capturedGoatsRight) {
+        capturedGoatsRight.innerHTML = "";
+    }
 
     // Reinitialize the board
     initBoard();
@@ -1263,4 +1269,10 @@ function hasValidMoves(row, col) {
     
     return false; // No valid moves found
 }
+
+// Initialize game when DOM is ready
+window.onload = function() {
+    initBoard();
+    updateStatus();
+};
 
